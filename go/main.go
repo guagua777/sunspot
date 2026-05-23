@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
+	// 执行命令
 	cmd.Execute()
 }

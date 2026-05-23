@@ -2,6 +2,15 @@ module sunspot/go
 
 go 1.24.2
 
+// 两个 require 块是 Go 的惯例，用来区分两类依赖：
+
+// 第一个 require（第5-12行）：你直接使用的依赖，即代码中 import 的包。
+
+// 第二个 require（第14-34行）：标记为 // indirect 的间接依赖，即你的直接依赖所需要的包，你的代码本身并不直接 import 它们。
+
+// 这个分隔是 go mod tidy 自动维护的，方便一眼看出哪些是你真正关心的依赖，哪些只是传递依赖。
+
+
 require (
 	github.com/consensys/gnark v0.14.0
 	github.com/consensys/gnark-crypto v0.19.0

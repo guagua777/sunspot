@@ -4,16 +4,10 @@
 mod commitments;
 mod error;
 mod hash;
-mod proof;
+pub mod proof;
 mod syscalls;
-mod verifier;
+pub mod verifier;
 #[cfg(test)]
 mod verifier_test;
-mod vk;
-mod witness;
-
-pub use error::GnarkError;
-pub use proof::GnarkProof;
-pub use verifier::GnarkVerifier;
-pub use vk::{generate_key_file, parse_vk, GnarkVerifyingkey};
-pub use witness::GnarkWitness;
+pub mod vk;
+pub mod witness;

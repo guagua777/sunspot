@@ -13,11 +13,14 @@ import {
 } from "@solana/spl-token";
 import fs from "fs";
 
+
+console.log("invoke program start.......");
+
 const PROGRAM_ID = new PublicKey("9R6bqjw54kNcVgxdTU6i6fXLpnmB29Badep2b3S1XwM6");
 const MINT = new PublicKey("47VHscQ5d95Axasw38Axi5ttmcxBKLqim3NnLZ5ddTvN");
 
 // === CONNECTION & WALLET ===
-const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+const connection = new Connection("https://rpc.ankr.com/solana_devnet", "confirmed");
 const payer = Keypair.fromSecretKey(
   Uint8Array.from(JSON.parse(fs.readFileSync(`${process.env.HOME}/.config/solana/id.json`, "utf-8")))
 );
@@ -52,6 +55,8 @@ if (!fs.existsSync(proofPath) || !fs.existsSync(witnessPath)) {
 }
 
 const proofBytes = fs.readFileSync(proofPath);
+// 读取pv文件，prover witness文件
+// 将文件内容传递给链上程序
 const witnessBytes = fs.readFileSync(witnessPath);
 console.log(`Loaded ${proofBytes.length} bytes from ${proofPath}`);
 console.log(`Loaded ${witnessBytes.length} bytes from ${witnessPath}`);

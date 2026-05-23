@@ -14,6 +14,7 @@ fn generate_expression_test_empty(path: &str) {
         std::fs::remove_file(&file_name).expect("Failed to remove file");
     }
 
+    // 创建一个表达式
     let expression = Expression::<FieldElement> {
         mul_terms: vec![],
         linear_combinations: vec![],
@@ -38,6 +39,7 @@ fn generate_expression_test_empty(path: &str) {
     );
 }
 
+// 创建一个表达式，包含线性组合
 fn generate_expression_test_linear_combinations(path: &str) {
     let file_name = format!("{path}/expression_linear_combinations.bin");
 
@@ -74,6 +76,7 @@ fn generate_expression_test_linear_combinations(path: &str) {
     );
 }
 
+// 创建一个表达式，包含乘法项
 fn generate_expression_test_mul_terms(path: &str) {
     let file_name = format!("{path}/expression_mul_terms.bin");
 

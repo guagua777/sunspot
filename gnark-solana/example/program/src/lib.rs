@@ -1,5 +1,5 @@
 mod vk;
-use gnark_verifier_solana::{GnarkProof, GnarkVerifier, GnarkWitness};
+use gnark_verifier_solana::{proof::GnarkProof, verifier::GnarkVerifier, witness::GnarkWitness};
 use solana_program::{
     account_info::{next_account_info, AccountInfo},
     entrypoint::{entrypoint, ProgramResult},
@@ -40,7 +40,9 @@ pub fn process_instruction(
     let mint_authority = next_account_info(accounts_iter)?;
 
     // Construct the proof and witness and verify
+    // 输入数量
     const NR_INPUTS: usize = vk::VK.nr_pubinputs;
+    // 输入数据为 proof + public_witness
     let proof_len = instruction_data.len() - (12 + NR_INPUTS * 32);
     let proof_bytes = &instruction_data[..proof_len];
 
@@ -57,6 +59,7 @@ pub fn process_instruction(
     })?;
 
     let mut verifier: GnarkVerifier<NR_INPUTS> = GnarkVerifier::new(&vk::VK);
+    // 验证
     let result = verifier.verify(proof, public_witness);
 
     if result.is_err() {
@@ -75,6 +78,7 @@ pub fn process_instruction(
     let amount_to_mint = 1u64;
     msg!("User eligible, minting tokens...");
 
+    // pda权限账户
     let (mint_authority_pda, bump) =
         Pubkey::find_program_address(&[b"ofac_check_mint_auth"], program_id);
     msg!("{}", mint_authority_pda);

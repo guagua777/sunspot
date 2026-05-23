@@ -3,7 +3,6 @@
 
 use thiserror::Error;
 
-#[allow(missing_docs)]
 #[derive(Debug, Error, PartialEq)]
 pub enum GnarkError {
     #[error("Incompatible Verifying Key with number of public inputs")]

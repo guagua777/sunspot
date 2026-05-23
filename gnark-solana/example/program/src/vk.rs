@@ -1,5 +1,6 @@
 // === Auto-generated verifying key constant ===
-use gnark_verifier_solana::GnarkVerifyingkey;
+// 这个文件从哪里生成的？
+use gnark_verifier_solana::vk::GnarkVerifyingkey;
 #[rustfmt::skip]
 pub const VK: GnarkVerifyingkey<'static> = GnarkVerifyingkey {
     nr_pubinputs: 1,

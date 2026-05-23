@@ -13,6 +13,7 @@ fn generate_zero_field(path: &str) {
 
     // Create a new file
     let mut file = std::fs::File::create(&file_name).expect("Failed to create file");
+    // 创建一个零字段
     let zero_field = acir_field::FieldElement::from(0u64);
     let config = bincode::config::standard()
         .with_fixed_int_encoding()
@@ -39,6 +40,7 @@ fn generate_1234_field(path: &str) {
 
     // Create a new file
     let mut file = std::fs::File::create(&file_name).expect("Failed to create file");
+    // 创建一个字段值为 1234 的字段
     let field_value = acir_field::FieldElement::from(1234u64);
     let config = bincode::config::standard()
         .with_fixed_int_encoding()

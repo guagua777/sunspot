@@ -17,6 +17,7 @@ fn generate_aes128encrypt_test_empty(path: &str) {
 
     // Create a new file
     let mut file = std::fs::File::create(&file_name).expect("Failed to create file");
+    // 创建一个 AES128Encrypt 函数调用
     let aes128encrypt_function_call = BlackBoxFuncCall::AES128Encrypt {
         inputs: vec![],
         iv: Box::new([FunctionInput::<FieldElement>::Witness(Witness(1234)); 16]),

@@ -41,7 +41,7 @@ pub fn generate_key_file(source_file: &str, target_file: &str) -> io::Result<()>
 }
 
 /// Parses a gnark generated verification key into the local Gnark type
-pub fn parse_vk<'a, R: Read>(mut reader: R) -> io::Result<GnarkVerifyingkey<'a>> {
+pub(crate) fn parse_vk<'a, R: Read>(mut reader: R) -> io::Result<GnarkVerifyingkey<'a>> {
     let mut vk_alpha_g1 = [0u8; 64];
     reader.read_exact(&mut vk_alpha_g1)?;
     let mut vk_beta_g1 = [0u8; 64];
@@ -56,6 +56,7 @@ pub fn parse_vk<'a, R: Read>(mut reader: R) -> io::Result<GnarkVerifyingkey<'a>>
     reader.read_exact(&mut vk_delta_g2)?;
 
     // Read the IC vector
+    // 前4个字节为输入数量
     let vk_ic_vec = read_vk_ic(&mut reader)?;
     let vk_ic_slice: &'static [[u8; 64]] = Box::leak(vk_ic_vec.into_boxed_slice());
 
@@ -156,7 +157,7 @@ fn write_vk_const_file<P: AsRef<Path>>(vk: &GnarkVerifyingkey, target_file: P) -
 
     // Add a clear separator
     writeln!(f, "// === Auto-generated verifying key constant ===")?;
-    writeln!(f, "use gnark_verifier_solana::GnarkVerifyingkey;")?;
+    writeln!(f, "use gnark_verifier_solana::vk::GnarkVerifyingkey;")?;
     // Helper function to format byte arrays as hex
     fn fmt_byte_array(bytes: &[u8]) -> String {
         let mut s = String::from("[");
@@ -223,6 +224,12 @@ mod tests {
 
     #[test]
     fn test_parse_vk_no_commitment() -> io::Result<()> {
+        // let mut file = File::open("aaa.txt")?;
+        // // 打印文件内容
+        // let mut content = String::new();
+        // io::Read::read_to_string(&mut file, &mut content)?;
+        // println!("{}", content);
+
         // Open the test file
         let file = File::open("src/test_files/sum_a_b.vk")?;
 

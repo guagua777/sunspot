@@ -38,3 +38,5 @@ node_modules
 *.pw
 
 generated_vk.rs
+
+.claude/

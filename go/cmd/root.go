@@ -9,6 +9,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// // 1. 类型别名：等价互通
+// type T1 = int
+// // 2. 新类型：完全不同类型
+// type T2 int
+
+// 类型别名
 type E = constraint.U64
 type T = *bn254.BN254Field
 
@@ -19,6 +25,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	// if 带初始化变量
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

@@ -1,6 +1,6 @@
 use utils::{constants::DG1_LENGTH};
 use sanctions::{types::{SanctionsOrderedMerkleTreeProof, SanctionsOrderedMerkleTreeProofs}, SanctionsSparseMerkleTrees};
-use commitment_utils::calculate_certificate_registry_leaf;
+use commitment_utils::calculate_certificate_registry_leaf_v0;
 use validity_check::{check_integrity_of_sod_within_sod_cert, PassportValidityContents};
 use commitment_utils::{get_country_from_dg1, compute_merkle_root};
 use expiry_check::check_expiry;
@@ -19,7 +19,7 @@ fn main(dg1: [u8; DG1_LENGTH], proofs: [SanctionsOrderedMerkleTreeProof; 10],
 
     // Make sure that the provided csc is in the merkle tree of certificates
     let leaf: Field =
-        calculate_certificate_registry_leaf(certificate_tags, 1, get_country_from_dg1(dg1), passport_validity_contents.csc_pubkey);
+        calculate_certificate_registry_leaf_v0(certificate_tags, 1, get_country_from_dg1(dg1), passport_validity_contents.csc_pubkey);
     let root = compute_merkle_root(
         leaf,
         certificate_registry_index,
@@ -68,6 +68,7 @@ fn check_passport_validity(passport_validity_contents: PassportValidityContents)
         passport_validity_contents.dsc_rsa_exponent,
         passport_validity_contents.signed_attributes,
         passport_validity_contents.signed_attributes_size as u32,
+        32,
     ));
 
     // --- DSC certificate signature check ---
@@ -88,6 +89,7 @@ fn check_passport_validity(passport_validity_contents: PassportValidityContents)
         passport_validity_contents.csc_rsa_exponent,
         passport_validity_contents.dsc_cert, // This is `data_to_sign`, i.e. the message
         passport_validity_contents.dsc_cert_len,
+        0,
     ));
 }
 

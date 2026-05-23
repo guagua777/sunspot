@@ -58,6 +58,8 @@ mod tests {
     use num_traits::Num;
     #[test]
     fn test_parse_witness_from_file() {
+        // 读取Prover Witness文件
+        // pub 输入为1个，可查看源文件，位于noir-samples/expressions/sum_a_b目录
         let mut file = File::open("src/test_files/sum_a_b.pw").unwrap();
 
         const NR_INPUTS: usize = 1;

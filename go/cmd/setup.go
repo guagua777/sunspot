@@ -28,8 +28,10 @@ var setupCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf("failed to load CCS: %v", err)
 		}
+		// 关闭文件
 		defer f.Close()
 
+		// 生成groth16证明和验证密钥
 		// Read CCS from file
 		ccs := groth16.NewCS(ecc.BN254)
 		if _, err := ccs.ReadFrom(f); err != nil {

@@ -4,7 +4,7 @@
 mod generated_vk;
 mod tests;
 
-use gnark_verifier_solana::{GnarkProof, GnarkVerifier, GnarkWitness};
+use gnark_verifier_solana::{proof::GnarkProof, verifier::GnarkVerifier, witness::GnarkWitness};
 use solana_program::{
     account_info::AccountInfo,
     entrypoint::{entrypoint, ProgramResult},
@@ -26,6 +26,8 @@ pub fn process_instruction(
 ) -> ProgramResult {
     // Number of public inputs
     const NR_INPUTS: usize = generated_vk::VK.nr_pubinputs;
+    // instruction_data layout: [proof_bytes | public_witness_bytes]
+    // public_witness_bytes = 12 bytes header + NR_INPUTS * 32 bytes per input
     let proof_len = instruction_data.len() - (12 + NR_INPUTS * 32);
     let proof_bytes = &instruction_data[..proof_len];
 
@@ -35,6 +37,7 @@ pub fn process_instruction(
         ProgramError::Custom(u32::from(e))
     })?;
 
+    // 读取链下传入的prover witness文件
     let public_witness_bytes = &instruction_data[proof_len..];
     let public_witness = GnarkWitness::from_bytes(public_witness_bytes).map_err(|e| {
         msg!("Gnark error: {:?}", e);
